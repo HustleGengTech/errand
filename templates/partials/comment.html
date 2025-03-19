@@ -1,0 +1,46 @@
+{% load static %}
+<div class="comment-card p-4 bg-gray-800 rounded-lg shadow-lg">
+    {% if comment.user %}
+    <div class="flex items-center space-x-4">
+        <img src="{{comment.user.profile.avatar}}" alt="User" class="w-10 h-10 rounded-full">
+        <div>
+            <h3 class="text-lg font-semibold">{{ comment.user.username }}</h3>
+            <p class="text-gray-300 text-sm">{{ comment.text }}</p>
+            <p class="text-gray-500 text-xs">{{ comment.created_at }}</p>
+            {% if user.is_authenticated and comment.user == user %}
+            <a href="{% url 'comment-delete' comment.id %}" class="text-gray-500 text-xs">Delete</a>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <div class="flex items-center space-x-4">
+        <img src="{% static 'image/smile.jpeg' %}" alt="Profile" class="w-12 h-12 rounded-full">
+        <div>
+            <h3 class="text-lg font-semibold">{{ comment.user.username }}</h3>
+            <p class="text-gray-300 text-sm">{{ comment.text }}</p>
+            <p class="text-gray-500 text-xs">{{ comment.created_at }}</p>
+            {% if user.is_authenticated and comment.user == user %}
+            <a href="{% url 'comment-delete' comment.id %}" class="text-gray-500 text-xs">Delete</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+<style>
+    /* Fade-in animation for new comments */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Apply the animation to new comments */
+    .comment-card {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+</style>

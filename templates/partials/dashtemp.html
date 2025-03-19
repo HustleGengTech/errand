@@ -1,0 +1,89 @@
+{% load static %}
+<div class="flex flex-col items-center">
+    <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg">
+        {%  if profile.image and profile.image.url != '/media/default.jpg'  %}
+        <img src="{{ profile.image.url }}" alt="Profile Picture" class="w-full h-full object-cover">
+        {% else %}
+        <img src="{% static 'image/smile.jpeg' %}" alt="Profile Picture" class="w-full h-full object-cover">
+        {% endif %}
+    </div>
+    {% if is_own_dashboard %}
+    <div></div>
+    <h1 class="text-2xl font-bold mt-4">{{ profile.fullname }}</h1>
+    <p class="text-gray-400">@{{profile.user.username}}</p>
+    {% else %}
+        <h1 class="text-2xl font-bold mt-4">{{ profile.fullname }}</h1>
+        <p class="text-gray-400">@{{ profile.user.username }}'s Dashboard</p>
+    {% endif %}
+    
+
+    <!-- Additional Profile Info -->
+    <div class="mt-4 space-y-2 text-center">
+        {% if is_own_dashboard %}
+        <p class="text-gray-300"><i class="ph ph-note text-yellow-400"></i> <span class="font-semibold">Bio:</span> {{ profile.bio }}</p>
+        <p class="text-gray-300"><i class="ph ph-briefcase text-blue-400"></i> <span class="font-semibold">Occupation:</span> {{ profile.occupation}}</p>
+        <p class="text-gray-300"><i class="ph ph-map-pin text-red-400"></i> <span class="font-semibold">City:</span> {{ profile.city }}</p>
+        <p class="text-gray-300"><i class="ph ph-map text-green-400"></i> <span class="font-semibold">State:</span> {{ profile.state }}</p>
+        <p class="text-gray-300"><i class="ph ph-whatsapp-logo text-green-500"></i> <span class="font-semibold">WhatsApp:</span> 
+            <a href="{{ profile.socials }}" target="_blank" class="text-blue-400 hover:underline">Chat on WhatsApp</a>
+        </p>
+        {% if request.user != reviewed_user %}
+            {% if reviewed_user in request.user.favorite_users.all %}
+                <!-- Remove from Favorites Button -->
+                <form method="post" action="{% url 'toggle_favorite' reviewed_user.username %}">
+                    {% csrf_token %}
+                    <button type="submit" class="favorite-button remove">Remove from Favorites</button>
+                </form>
+            {% else %}
+                <!-- Add to Favorites Button -->
+                <form method="post" action="{% url 'toggle_favorite' reviewed_user.username %}">
+                    {% csrf_token %}
+                    <button type="submit" class="favorite-button add">Add to Favorites</button>
+                </form>
+            {% endif %}
+        {% endif %}
+        {% else %}
+        <p class="text-gray-300"><i class="ph ph-note text-yellow-400"></i> <span class="font-semibold">Bio:</span> {{ profile.bio }}</p>
+        <p class="text-gray-300"><i class="ph ph-briefcase text-blue-400"></i> <span class="font-semibold">Occupation:</span> {{ profile.occupation}}</p>
+        <p class="text-gray-300"><i class="ph ph-map-pin text-red-400"></i> <span class="font-semibold">City:</span> {{ profile.city }}</p>
+        <p class="text-gray-300"><i class="ph ph-map text-green-400"></i> <span class="font-semibold">State:</span> {{ profile.state }}</p>
+        <p class="text-gray-300"><i class="ph ph-whatsapp-logo text-green-500"></i> <span class="font-semibold">WhatsApp:</span> 
+            <a href="{{ profile.socials }}" target="_blank" class="text-blue-400 hover:underline">Chat on WhatsApp</a>
+        </p>
+        {% if request.user != reviewed_user %}
+            {% if reviewed_user in request.user.favorite_users.all %}
+                <!-- Remove from Favorites Button -->
+                <form method="post" action="{% url 'toggle_favorite' reviewed_user.username %}">
+                    {% csrf_token %}
+                    <button type="submit" class="favorite-button remove">Remove from Favorites</button>
+                </form>
+            {% else %}
+                <!-- Add to Favorites Button -->
+                <form method="post" action="{% url 'toggle_favorite' reviewed_user.username %}">
+                    {% csrf_token %}
+                    <button type="submit" class="favorite-button add">Add to Favorites</button>
+                </form>
+            {% endif %}
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .favorite-button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        color: white;
+    }
+
+    .favorite-button.add {
+        background-color: #4CAF50; /* Green for "Add to Favorites" */
+    }
+
+    .favorite-button.remove {
+        background-color: #f44336; /* Red for "Remove from Favorites" */
+    }
+</style>

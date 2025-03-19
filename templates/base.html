@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar with Profile & Dark Mode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    <script src="https://unpkg.com/hyperscript.org@0.9.14"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ 
+</head>
+<body class="bg-gray-900 text-white transition-all duration-500">
+    <nav class="bg-gray-800 shadow-lg p-4 sticky top-0 w-full">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            <a href="{% url 'home' %}" class="text-2xl font-bold text-white hover:text-gray-300 transition-all">Errand</a>
+
+            <!-- Desktop Menu -->
+            <ul class="hidden md:flex space-x-6">
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'create_post' %}" class="nav-item" data-page="index">
+                    <span class="icon">🏠</span> Create-Post
+                </a></li>
+                
+                <li>
+                    <form action="{% url 'search' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="searched" class="text-black-400" placeholder="Search for users or posts..." required>
+                        <button type="submit">Search</button>
+                    </form>
+                </li>
+                <li><a href="services.html" class="nav-item" data-page="services">
+                    <span class="icon">🛠️</span> Services
+                </a></li>
+                <li><a href="contact.html" class="nav-item" data-page="contact">
+                    <span class="icon">📞</span> Contact
+                </a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}" class="nav-item" data-page="contact">
+                    <span class="icon">🔐</span> Login
+                </a></li>
+                <li><a href="{% url 'register' %}" class="nav-item" data-page="contact">
+                    <span class="icon">📝</span> Register
+                </a></li>
+                {% endif %}
+            </ul>
+
+            <!-- Profile & Dark Mode Toggle -->
+            <div class="flex items-center space-x-4">
+                <!-- Dark Mode Toggle -->
+                <button id="dark-mode-toggle" class="text-xl">🌙</button>
+                {% if user.is_authenticated %}
+                <!-- Profile Dropdown -->
+                <div class="relative">
+                    <button id="profile-btn" class="flex items-center space-x-2 bg-gray-700 px-3 py-2 rounded-full hover:bg-gray-600">
+                        <span>👤</span>
+                        <span class="hidden md:inline">Profile</span>
+                    </button>
+                    <ul id="profile-menu" class="hidden absolute right-0 mt-2 w-40 bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+                        <li><a href="{% url 'profile' %}" class="profile-item">👤 My Profile</a></li>
+                        <li><a href="{% url 'dashboard' user.username %}" class="profile-item">📋 Dasboard</a></li>
+                        <li><a href="{% url 'favorite_list' %}" class="profile-item">🗒️ Favourite</a></li>
+                        <li><a href="{% url 'private_feed' %}" class="profile-item">📒 Private Feed</a></li>
+                        <li><a href="settings.html" class="profile-item">⚙️ Settings</a></li>
+                        <li><a href="{% url 'logout' %}" class="profile-item">🚪 Logout</a></li>
+                    </ul>
+                </div>
+                {% endif %}
+              
+
+                <!-- Mobile Menu Button -->
+                <button id="menu-btn" class="md:hidden text-white text-3xl">☰</button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <ul id="mobile-menu" class="hidden md:hidden flex flex-col mt-4 space-y-4 bg-gray-800 p-4">
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'create_post' %}" class="nav-item" data-page="index">
+                <span class="icon">🏠</span> Create-Post
+            </a></li>
+            <li><a href="about.html" class="nav-item" data-page="about">
+                <span class="icon">ℹ️</span> About
+            </a></li>
+            <li><a href="services.html" class="nav-item" data-page="services">
+                <span class="icon">🛠️</span> Services
+            </a></li>
+            <li>
+                <form hx-get="{% url 'search' %}" hx-target="#search-results" hx-swap="innerHTML">
+                    <input type="text" name="query" placeholder="Search for users or posts..." required>
+                    <button type="submit">Search</button>
+                </form>
+            </li>
+            {% else %}
+            <li><a href="{% url 'login' %}" class="nav-item" data-page="contact">
+                <span class="icon">🔐</span> Login
+            </a></li>
+            <li><a href="{% url 'register' %}" class="nav-item" data-page="contact">
+                <span class="icon">📝</span> Register
+            </a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    {% block layout %}
+    {% endblock %}
+
+    <script>
+        // Highlight Active Page
+        const currentPage = window.location.pathname.split("/").pop().replace(".html", "");
+        document.querySelectorAll(".nav-item").forEach(link => {
+            if (link.dataset.page === currentPage) {
+                link.classList.add("active");
+            }
+        });
+
+        // Toggle Mobile Menu
+        document.getElementById("menu-btn").addEventListener("click", function() {
+            document.getElementById("mobile-menu").classList.toggle("hidden");
+        });
+
+        // Toggle Profile Dropdown
+        document.getElementById("profile-btn").addEventListener("click", function() {
+            document.getElementById("profile-menu").classList.toggle("hidden");
+        });
+
+        // Dark Mode Toggle
+        const darkModeBtn = document.getElementById("dark-mode-toggle");
+        darkModeBtn.addEventListener("click", function() {
+            document.body.classList.toggle("bg-white");
+            document.body.classList.toggle("text-black");
+            document.body.classList.toggle("bg-gray-900");
+            document.body.classList.toggle("text-white");
+            darkModeBtn.textContent = document.body.classList.contains("bg-gray-900") ? "🌙" : "☀️";
+        });
+    </script>
+
+    <style>
+        /* Nav Item Hover Effect */
+        .nav-item {
+            @apply relative px-4 py-2 flex items-center space-x-2 text-lg font-semibold transition-all duration-300 
+            transform hover:-translate-y-1 hover:shadow-[0px_4px_10px_rgba(255,255,255,0.3)];
+        }
+
+        /* Active Page Indicator */
+        .active {
+            @apply text-blue-400 border-b-2 border-blue-400;
+        }
+
+        /* Icon Styling */
+        .icon {
+            @apply text-xl;
+        }
+
+        /* Profile Dropdown Styling */
+        .profile-item {
+            @apply block px-4 py-2 text-white hover:bg-gray-700;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleFavoriteButtons = document.querySelectorAll('.toggle-favorite, #toggle-favorite');
+            
+            toggleFavoriteButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const username = this.dataset.username;
+                    
+                    fetch(`/toggle-favorite/${username}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.action === 'added') {
+                            this.textContent = 'Remove from Favorites';
+                        } else {
+                            this.textContent = 'Add to Favorites';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

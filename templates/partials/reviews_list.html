@@ -1,0 +1,8 @@
+<!-- reviews_list.html -->
+<div class="flex items-center  comment-card mt-4 p-4 bg-gray-800 rounded-lg shadow-lg">
+    <img src="{{ review.reviewer.profile.image.url }}" alt="Reviewer" class="w-10 h-10 rounded-full mr-3">
+    <div>
+        <p class="text-sm font-semibold">{{ review.reviewer.username }}</p>
+        <p class="text-gray-400 text-sm">{{ review.text}}</p>
+    </div>
+</div>

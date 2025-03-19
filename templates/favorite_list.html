@@ -1,0 +1,40 @@
+{% include 'base.html' %}
+
+{% block content %}
+<div class="bg-gray-900 text-white p-6 items-center justify-center min-h-screen">
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="bg-indigo-900 text-center py-4 lg:px-4">
+              <span class="font-semibold mr-2 text-left flex-auto">{{ message }}</span>
+          </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+<h1 class="text-3xl font-bold mb-6">My Favorite Users</h1>
+
+<ul>
+    {% for favorite in favorites %}
+        <li>
+            <a href="{% url 'user_dashboard' favorite.favorite_user.username %}">
+                <div class="flex items-center space-x-4 post-card bg-gray-800">
+                    <img src="{{ favorite.favorite_user.profile.image.url }}" alt="User" class="w-10 h-10 rounded-full">
+                    </a>
+                    <div>
+                        <h3 class="text-lg font-semibold">{{ favorite.favorite_user.profile.fullname }}</h3>
+                        <p class="text-gray-300 text-sm">City: {{ favorite.favorite_user.profile.city }}</p>
+                        <p class="text-gray-300 text-sm">State: {{ favorite.favorite_user.profile.state }}</p>
+                    </div>
+                </div> <br> 
+            </a>
+            <form method="post" action="{% url 'toggle_favorite' favorite.favorite_user.username %}">
+                {% csrf_token %}
+                <button type="submit" class="bg-red-500 text-white rounded-lg px-4 py-2">Remove from Favorites</button>
+            </form>
+        </li> <br> 
+    {% empty %}
+        <p>No favorite users yet.</p>
+    {% endfor %}
+</ul>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% include 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="bg-gray-900 text-white p-6 flex flex-col items-center min-h-screen">
+    
+    <!-- Register Page -->
+    <form method="post" class="max-w-md w-full bg-gray-800 p-6 rounded-lg shadow-lg">
+        {% csrf_token %}
+        <h1 class="text-xl font-bold mb-4 flex items-center">
+            <i class="ph ph-user-plus text-blue-400 mr-2"></i> Login
+        </h1>
+        <div class="flex items-center bg-gray-700 p-2 rounded-lg mb-3">
+            <i class="ph ph-envelope text-blue-400 mr-2"></i>
+            <input type="username" name="username" placeholder="Username" class="w-full bg-transparent text-white focus:ring-0 outline-none">
+        </div>
+        <div class="flex items-center bg-gray-700 p-2 rounded-lg mb-3">
+            <i class="ph ph-lock text-blue-400 mr-2"></i>
+            <input type="password" name="password" placeholder="Password" class="w-full bg-transparent text-white focus:ring-0 outline-none">
+        </div>
+        <button class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600 text-white font-semibold w-full mt-3">Login</button>
+    </form>
+    
+</div>
+{% endblock %}

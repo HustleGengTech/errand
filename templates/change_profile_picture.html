@@ -1,0 +1,18 @@
+{% include 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Profile Picture Update Form -->
+<form method="post" enctype="multipart/form-data" class="bg-gray-900 text-white p-6 flex flex-col items-center min-h-screen">
+    {% csrf_token %}
+    <div class="space-y-4">
+        <!-- Image Field -->
+        <div>
+            <label class="block text-gray-700">Upload New Profile Picture</label>
+            {{ form.image }}
+        </div>
+    </div>
+    <!-- Submit Button -->
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded mt-6">Update Profile Picture</button>
+</form>
+{% endblock %}

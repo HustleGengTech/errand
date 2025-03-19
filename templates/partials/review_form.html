@@ -1,0 +1,10 @@
+<!-- review_form.html -->
+<form method="POST" action="">
+    {% csrf_token %}
+    <input type="text" name="text" placeholder="Write a Review" class="w-full bg-gray-700 text-white p-3 rounded-lg focus:outline-none" {{ form.as_p }} required>
+    <button type="submit" class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">Send</button>
+</form>
+
+
+
+

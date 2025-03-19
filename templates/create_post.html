@@ -1,0 +1,25 @@
+{% include 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="bg-gray-900 text-white p-6 flex flex-col items-center min-h-screen">
+    
+    <!-- Create Post Page -->
+    <div class="max-w-2xl w-full bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h1 class="text-xl font-bold mb-4 flex items-center">
+            <i class="ph ph-pencil text-green-400 mr-2"></i> Create a Post
+        </h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <textarea placeholder="Post Description" class="w-full bg-gray-700 text-white p-2 rounded-lg mb-3 focus:ring-2 focus:ring-green-400" {{ form.description }}></textarea>
+            <label class="block bg-gray-700 text-center p-2 rounded-lg cursor-pointer hover:bg-gray-600">
+                <i class="ph ph-image text-yellow-400"></i> Upload Image
+                {{ form.image }}
+            </label>
+            <button class="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-600 text-white font-semibold w-full mt-3">Post</button>
+        </form>
+    </div>
+    
+</div>
+{% endblock %}

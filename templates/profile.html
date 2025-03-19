@@ -1,0 +1,73 @@
+{% include 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="bg-gray-900 text-white p-6 flex items-center justify-center min-h-screen">
+    <div class="max-w-lg w-full bg-gray-800 p-6 rounded-lg shadow-lg relative">
+        <!-- Profile Image -->
+        <div class="flex flex-col items-center">
+            <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg">
+                {% if profile.image and profile.image.url != '/media/default.jpg' %}
+                <img src="{{ profile.image.url }}" alt="Profile Picture" class="w-full h-full object-cover">
+                {% else %}
+                <img src="{% static 'image/smile.jpeg' %}"  class="w-full h-full object-cover">
+                {% endif %}
+            </div>
+            <h1 class="text-2xl font-bold mt-4">{{ profile.fullname }}</h1>
+            <p class="text-gray-400"><span>@{{ profile.user.username}}</span></p>
+        </div>
+
+        <!-- Profile Details -->
+        <div class="mt-6 space-y-4">
+            <div class="flex items-center space-x-3">
+                <i class="ph ph-user text-xl text-blue-400">👤</i>
+                <p class="text-gray-300">Full Name: <span class="font-semibold">{{ profile.fullname }}</span></p>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <i class="ph ph-user text-xl text-blue-400">✉</i>
+                <p class="text-gray-300">Email: <span class="font-semibold">{{ profile.user.email}}</span></p>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <i class="ph ph-briefcase text-xl text-yellow-400">💼</i>
+                <p class="text-gray-300">Occupation: <span class="font-semibold">{{ profile.occupation }}</span></p>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <i class="ph ph-map-pin text-xl text-red-400">📍</i>
+                <p class="text-gray-300">City: <span class="font-semibold">{{ profile.city }}</span></p>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <i class="ph ph-map text-xl text-purple-400">🗺️</i>
+                <p class="text-gray-300">State: <span class="font-semibold">{{profile.state }}</span></p>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <i class="ph ph-globe text-xl text-blue-500">🌍</i>
+                <p class="text-gray-300">Country: <span class="font-semibold">{{ profile.country }}</span></p>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <i class="ph ph-note text-xl text-orange-400">📁</i>
+                <p class="text-gray-300">Bio: <span class="font-semibold">{{ profile.bio }}</span></p>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <i class="ph ph-whatsapp-logo text-xl text-green-400">💬</i>
+                <p class="text-gray-300">WhatsApp: 
+                    <a href="https://wa.me/1234567890" target="_blank" class="text-green-400 font-semibold hover:underline">Chat Now</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Edit Profile Button -->
+        <div class="mt-6 flex justify-center justify-between">
+            <a href="{% url 'edit_profile' %}" class="bg-blue-500 px-6 py-2 rounded-lg hover:bg-blue-600 text-white font-semibold">Edit Profile</a>
+            <a href="{% url 'change_profile_picture' %}" class="bg-blue-500 px-6 py-2 rounded-lg hover:bg-blue-600 text-white font-semibold">Change Profile Picture</a>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

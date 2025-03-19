@@ -1,0 +1,13 @@
+# @login_required
+# def review_page(request,username):
+#     reviewed_user = get_object_or_404(User, username=username)
+#      # Fetch the user's profile
+#     profile = reviewed_user.profile
+#     reviews = reviewed_user.reviews_received.all()
+#     return render(request, "reviews.html", {'reviewedd_user':reviewed_user,'profile':profile})
+
+{% if reviewed_user in request.user.favorite_users.all %}
+    <button class="bg-red-500 text-white rounded-lg px-4 py-2">Remove from Favorites</button>
+    {% else %}
+    <button class="bg-green-500 text-white rounded-lg px-4 py-2">Add to Favorites</button>
+    {% endif %}

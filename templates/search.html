@@ -1,0 +1,60 @@
+{% include 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="bg-gray-900 text-white p-6 flex flex-col  min-h-screen">
+<!-- Search Results -->
+
+    <h3>Search Results for "{{ searched }}"</h3>
+{% if searched %}
+    {% for data in datas %}
+
+    <div class="flex items-center space-x-4 post-card bg-gray-800">
+        <img src="{{data.user.profile.avatar}}" alt="User" class="w-10 h-10 rounded-full">
+        <a href="{% url 'user_dashboard' username=data.user.username %}">
+            <h3 class="text-lg font-semibold">{{ data.user.username }}</h3>
+            <p class="text-gray-300 text-sm">{{ data.city }}</p>
+            <p class="text-gray-500 text-xs">{{ data.state }}</p>
+        </a>
+    </div> <br> 
+    {% endfor %}
+
+    {% for post_data in post_datas %}
+    <div class="post-card bg-gray-800 shadow-lg rounded-lg overflow-hidden p-4 mb-6">
+            <!-- Post Header -->
+           
+            <div href="" class="flex items-center space-x-4">
+                {% if post.author.profile.avatar and post.author.profile.avatar.url != '/media/default.jpg' %}
+                <img src="{{ post_data.author.profile.avatar }}" alt="Profile" class="w-12 h-12 rounded-full">
+                {% else %}
+                <img src="{% static 'image/smile.jpeg' %}" alt="Profile" class="w-12 h-12 rounded-full">
+                {% endif %}
+                <div>
+                    <a href="">
+                    <h2 class="text-lg font-semibold">{{ post_data.author.profile.name }}</h2>
+                    </a>
+                    <p class="text-gray-400 text-sm">{{ post_data.created_at }}</p>
+                </div>
+            </div>
+
+            <!-- Post Image -->
+            {% if post_data.image %}
+            <a href="{% url 'single_post' post_data.id %}">
+                <div class="mt-4">
+                    <img src="{{ post_data.image.url }}" alt="Post Image" class="rounded-lg shadow-lg">
+                </div>
+            </a>
+            {% endif %}
+
+            <!-- Post Title -->
+            <h3 class="mt-4 text-xl font-bold">{{ post_data.description }}</h3>
+                 <span> Likes {{ post.likes.count }}</span>
+            
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No results found for "{{ searched }}".</p>
+{% endif %}
+</div>
+
+{% endblock %}
