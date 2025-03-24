@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate,logout
 from django.contrib import messages
-from .models import Profile,Post,Comment,Post, LikedPost,Review,Favorite
-from .forms import ProfileUpdateForm, PostForm,UserRegisterForm,CommentForm,ProfilePictureForm,ReviewForm
+from .models import Profile,Post,Comment,Post, LikedPost,Review,Favorite,Feedback
+from .forms import ProfileUpdateForm, PostForm,UserRegisterForm,CommentForm,ProfilePictureForm,ReviewForm,ChangeEmailForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse,HttpResponseNotFound
 from django.views.decorators.http import require_http_methods
@@ -12,7 +12,12 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
+from django.conf import settings
+from django.core.mail import send_mail
 from django.db.models import Q
+
 # Create your views here.
 @login_required
 def Home(request):
@@ -30,20 +35,20 @@ def ProfileView(request):
 
 @login_required
 def EditProfile(request):
+    profile = request.user.profile
     if request.method == 'POST':
-        # Pass the current instance of the profile and the uploaded files
-        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')  # Redirect to the profile page after saving
-    else:
-        # Pre-fill the form with the current profile data
-        form = ProfileUpdateForm(instance=request.user.profile)
-    
-    context = {
-        'form': form,
-    }
-    return render(request, 'editprofile.html',context)
+        profile = request.user.profile
+        profile.fullname = request.POST.get('fullname')
+        profile.occupation = request.POST.get('occupation')
+        profile.city = request.POST.get('city')
+        profile.state = request.POST.get('state')
+        profile.country = request.POST.get('country')
+        profile.bio = request.POST.get('bio')
+        profile.socials = request.POST.get('socials')
+        profile.save()
+        messages.success(request, "Profile as been updated")
+        return redirect('profile')
+    return render(request, 'editprofile.html',{'profile': profile})
 
 @login_required
 def DashboardView(request, username=None):
@@ -264,7 +269,7 @@ def Single_post(request, pk):
     }
     return render(request, 'singlepost.html', context)
 
-def search(request):
+def search(request):   
     if request.method =='POST':
         searched = request.POST['searched']
         datas = Profile.objects.filter(
@@ -328,7 +333,91 @@ def private_feed(request):
     return render(request, 'private_feed.html', {'posts': posts})
 
 
+def settings(request):
+    pass
+    return render(request,'settings.html')
 
 
+@login_required
+def change_email(request):
+    if request.method == 'POST':
+        form = ChangeEmailForm(request.POST, user=request.user)
+        if form.is_valid():
+            new_email = form.cleaned_data['new_email']
+            request.user.email = new_email
+            request.user.save()
+            messages.success(request, "Your email has been updated.")
+            return redirect('profile')  # Redirect to the user's profile page
+    else:
+        form = ChangeEmailForm(user=request.user)
+    
+    return render(request, 'change_email.html', {'form': form})
+
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'change_password.html'
+    success_url = reverse_lazy('profile')  # Redirect to the user's profile page after success
+
+    def form_valid(self, form):
+        messages.success(self.request, "Your password has been changed.")
+        return super().form_valid(form)
+
+
+@login_required
+def write_to_us(request):
+    if request.method == "POST":
+        content = request.POST.get("content")
+        if content:
+            # Save feedback to the database
+            Feedback.objects.create(user=request.user, content=content)
+
+            # Send email notification
+            send_mail(
+                subject=f"New Feedback from {request.user.username}",
+                message=f"Feedback content:\n\n{content}\n\nUser email: {request.user.email}",
+                from_email="noreply@errand.com",
+                recipient_list=["adeshinasmart@gmail.com"],  # Replace with your admin/support email
+            )
+            send_mail(
+                subject="Thank you for your feedback!",
+                message="Hi {0},\n\nThank you for taking the time to share your thoughts with us. We value your input and will review it shortly.\n\nBest regards,\nThe MyLife Team".format(request.user.username),
+                from_email="noreply@errand.com",
+                recipient_list=[request.user.email],
+                )
+
+            messages.success(request, "Thank you for your feedback!")
+            return redirect("thank_you")
+        else:
+            messages.error(request, "Feedback content cannot be empty.")
+    return render(request,'write_to_us.html',locals())
+
+def thank_you(request):
+    return render(request, 'thank_you.html')
+
+@login_required
+def filter_posts(request):
+    user_profile = Profile.objects.get(user=request.user)
+
+    # Start with all posts
+    posts = Post.objects.all()
+
+    # Apply filters based on user's location or search form
+    city = request.GET.get('city', user_profile.city)
+    state = request.GET.get('state', user_profile.state)
+    country = request.GET.get('country', user_profile.country)
+
+    if city:
+        posts = posts.filter(author__profile__city=city)
+    if state:
+        posts = posts.filter(author__profile__state=state)
+    if country:
+        posts = posts.filter(author__profile__country=country)
+
+    context = {
+        'posts': posts,
+        'city': city,
+        'state': state,
+        'country': country,
+    }
+    return render(request, 'home.html', context)
 
 

@@ -32,6 +32,7 @@
         <!-- Divider Line -->
         <hr class="my-6 border-gray-700">
         {% if request.user %}
+        {% if reviewed_user  != request.user %}
         <div class="flex items-center space-x-3 mb-4">
             <div class="mt-6 w-full">
                 <h2 class="text-lg font-semibold">Leave Reviews</h2>
@@ -49,13 +50,14 @@
                 </form>
             </div>
         </div>
+        {% endif%}
         {% endif %}
         
 
         <!-- Posts Section -->
         {% for review in reviews %}
         <div id="posts-section" class="grid gap-4">
-            <div class="bg-gray-700 p-4 rounded-lg shadow-md flex space-x-4">
+            <div class="bg-gray-700 p-4 rounded-lg shadow-md flex space-x-4 ">
                 {% if review.reviewer.profile.image and profile.image.url != '/media/default.jpg' %}
                 <img src="{{ review.reviewer.profile.image.url }}" alt="Post Image" class="w-10 h-10 rounded-full">
                 {% else %}

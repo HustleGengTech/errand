@@ -4,15 +4,7 @@
 {% block content %}
 <div class="bg-gray-900 text-white p-6 flex items-center justify-center min-h-screen">
     <div class="max-w-3xl w-full bg-gray-800 p-6 rounded-lg shadow-lg">
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                <div class="bg-indigo-900 text-center py-4 lg:px-4">
-                      <span class="font-semibold mr-2 text-left flex-auto">{{ message }}</span>
-                  </div>
-                {% endfor %}
-            </div>
-        {% endif %}
+        {% include 'partials/message.html' %}
         <!-- Profile Section -->
         {% include 'partials/dashtemp.html' %}
 
@@ -34,7 +26,7 @@
         <!-- Posts Section -->
         <div id="posts-section" class="grid gap-4">
             {% for post in posts %}
-            <div class="bg-gray-700 p-4 rounded-lg shadow-md">
+            <div class="bg-gray-700 p-4 rounded-lg shadow-md max-w-sm">
                 {% if post.image %}
                 <img src="{{ post.image.url }}" alt="Post Image" class="rounded-lg mb-3">
                 {% endif %}

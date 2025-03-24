@@ -2,5 +2,37 @@
 {% load static %}
 
 {% block content %}
-
+<div class="bg-gray-900 text-white p-6 flex flex-col items-center min-h-screen">
+    
+    <!-- Settings Page -->
+    <div class="max-w-md w-full bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h1 class="text-xl font-bold mb-4 flex items-center">
+            <i class="ph ph-gear text-blue-400 mr-2"></i> Settings
+        </h1>
+        
+        <!-- Change Email -->
+        <a href="{% url 'change_email' %}" class="flex items-center bg-gray-700 p-2 rounded-lg mb-3 hover:bg-gray-600">
+            <i class="ph ph-envelope text-blue-400 mr-2"></i>
+            <span>Change Email</span>
+        </a>
+        
+        <!-- Change Password -->
+        <a href="{% url 'change_password' %}" class="flex items-center bg-gray-700 p-2 rounded-lg mb-3 hover:bg-gray-600">
+            <i class="ph ph-lock text-blue-400 mr-2"></i>
+            <span>Change Password</span>
+        </a>
+        
+        <!-- Write to Us -->
+        <a href="{% url 'write_to_us' %}" class="flex items-center bg-gray-700 p-2 rounded-lg mb-3 hover:bg-gray-600">
+            <i class="ph ph-chat-text text-blue-400 mr-2"></i>
+            <span>Write to Us</span>
+        </a>
+        
+        <!-- Delete Account -->
+        <a href="#" class="flex items-center bg-red-500 p-2 rounded-lg hover:bg-red-600 text-white font-semibold w-full mt-3 justify-center">
+            <i class="ph ph-trash text-white mr-2"></i> Delete Account
+        </a>
+    </div>
+    
+</div>
 {% endblock %}

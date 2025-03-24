@@ -1,0 +1,22 @@
+{% include 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="bg-gray-900 text-white p-6 flex flex-col items-center min-h-screen">
+    <div class="max-w-md w-full bg-gray-800 p-6 rounded-lg shadow-lg">
+    
+        <!-- Settings Page -->
+        <h1 class="text-xl font-bold mb-4 flex items-center">Write to Us</h1>
+        <p>Welcome, {{ request.user.username }}</p>
+        <p>Your email: {{ request.user.email }}</p>
+        <br>
+        <form method="post">
+            {% csrf_token %}
+            <label for="message">Your Message:</label><br>
+            <textarea class="form-control text-white bg-gray-900 " id="content" name="content" rows="5" placeholder="Write your feedback here..." required></textarea> <br>
+            <button type="submit" value="Submit" class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600 text-white font-semibold w-full mt-3">Submit</button>
+        </form>
+    </div>
+    
+</div>
+{% endblock %}

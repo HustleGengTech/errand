@@ -9,42 +9,42 @@
         
 
         <!-- Edit Profile Form -->
-        <form method="post" enctype="multipart/form-data" class="mt-6 space-y-4">
+        <form method="post" action="{% url 'edit_profile' %}" enctype="multipart/form-data" class="mt-6 space-y-4">
             {% csrf_token %}
             <div class="flex items-center space-x-3">
                 <i class="ph ph-user text-xl text-blue-400"></i>
-                <input type="text" placeholder="Full Name" class="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-yellow-400" {{ form.fullname }}>
+                <input type="text" placeholder="Full Name" name="fullname" value="{{ profile.fullname }}" class="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-yellow-400">
             </div>
 
 
             <div class="flex items-center space-x-3">
                 <i class="ph ph-briefcase text-xl text-yellow-400"></i>
-                <input type="text" placeholder="Occupation" class="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-yellow-400" {{ form.occupation }}>
+                <input type="text" placeholder="Occupation" name="occupation" value="{{ profile.occupation }}" class="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-yellow-400" >
             </div>
 
             <div class="flex items-center space-x-3">
                 <i class="ph ph-map-pin text-xl text-red-400"></i>
-                <input type="text" placeholder="City" class="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-red-400" {{ form.city }}>
+                <input type="text" placeholder="City" name="city" value="{{ profile.city }}" class="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-red-400" >
             </div>
 
             <div class="flex items-center space-x-3">
                 <i class="ph ph-map text-xl text-purple-400"></i>
-                <input type="text" placeholder="State" class="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-purple-400" {{ form.state }}>
+                <input type="text" placeholder="State" name="state" value="{{ profile.state }}" class="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-purple-400" >
             </div>
 
             <div class="flex items-center space-x-3">
                 <i class="ph ph-globe text-xl text-blue-500"></i>
-                <input type="text" placeholder="Country" class="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-blue-500" {{ form.country }}>
+                <input type="text" placeholder="Country" name="country" value="{{ profile.country }}" class="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-blue-500" >
             </div>
 
             <div class="flex items-center space-x-3">
                 <i class="ph ph-note text-xl text-orange-400"></i>
-                <textarea placeholder="Bio" class="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-orange-400"{{ form.bio }}></textarea>
+                <textarea id="bio" placeholder="Bio" name="bio"  class="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-orange-400">{{ profile.bio }}</textarea>
             </div>
 
             <div class="flex items-center space-x-3">
                 <i class="ph ph-whatsapp-logo text-xl text-green-400"></i>
-                <input type="url" placeholder="WhatsApp Link" class="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-green-400"{{ form.socials }}>
+                <input type="url" placeholder="WhatsApp Link" name="socials" class="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-green-400" value="{{ profile.socials }}">
             </div>
 
             <!-- Buttons -->

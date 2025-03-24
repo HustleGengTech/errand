@@ -9,7 +9,7 @@
 {% if searched %}
     {% for data in datas %}
 
-    <div class="flex items-center space-x-4 post-card bg-gray-800">
+    <div class="h-30% items-center space-x-4 post-card bg-gray-800 flex rounded-full max-w-sm">
         <img src="{{data.user.profile.avatar}}" alt="User" class="w-10 h-10 rounded-full">
         <a href="{% url 'user_dashboard' username=data.user.username %}">
             <h3 class="text-lg font-semibold">{{ data.user.username }}</h3>
@@ -20,7 +20,7 @@
     {% endfor %}
 
     {% for post_data in post_datas %}
-    <div class="post-card bg-gray-800 shadow-lg rounded-lg overflow-hidden p-4 mb-6">
+    <div class="post-card bg-gray-800 shadow-lg rounded-lg overflow-hidden p-4 mb-6 max-w-sm">
             <!-- Post Header -->
            
             <div href="" class="flex items-center space-x-4">
@@ -48,7 +48,7 @@
 
             <!-- Post Title -->
             <h3 class="mt-4 text-xl font-bold">{{ post_data.description }}</h3>
-                 <span> Likes {{ post.likes.count }}</span>
+                 <span class="text-gray-400 text-sm"> 📍 {{ post_data.author.profile.city }}, {{ post_data.author.profile.state }}</span>
             
         </div>
     {% endfor %}

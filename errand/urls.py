@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import path,include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    path('master_admin/', admin.site.urls),
     path('',include('errandApp.urls')),
     path("__reload__/", include("django_browser_reload.urls")),
 ]

@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="bg-gray-900 text-white p-6 flex flex-col items-center min-h-screen">
-    
+    {% include 'partials/message.html' %}
     <!-- Register Page -->
     <form method="post" class="max-w-md w-full bg-gray-800 p-6 rounded-lg shadow-lg">
         {% csrf_token %}
@@ -19,6 +19,7 @@
             <input type="password" name="password" placeholder="Password" class="w-full bg-transparent text-white focus:ring-0 outline-none">
         </div>
         <button class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600 text-white font-semibold w-full mt-3">Login</button>
+        <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
     </form>
     
 </div>

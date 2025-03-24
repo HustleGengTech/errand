@@ -14,8 +14,7 @@
             {% csrf_token %}
             <textarea placeholder="Post Description" class="w-full bg-gray-700 text-white p-2 rounded-lg mb-3 focus:ring-2 focus:ring-green-400" {{ form.description }}></textarea>
             <label class="block bg-gray-700 text-center p-2 rounded-lg cursor-pointer hover:bg-gray-600">
-                <i class="ph ph-image text-yellow-400"></i> Upload Image
-                {{ form.image }}
+                {{ form.image }} 
             </label>
             <button class="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-600 text-white font-semibold w-full mt-3">Post</button>
         </form>

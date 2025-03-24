@@ -1,13 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navbar with Profile & Dark Mode</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Errand</title>
     <script src="https://unpkg.com/htmx.org@1.9.2"></script>
     <script src="https://unpkg.com/hyperscript.org@0.9.14"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- <link rel="stylesheet" href="{% if debug %}{% static 'dist/tailwind.css' %}{% else %}{% static 'dist/tailwind.min.css' %}{% endif %}"> -->
  
 </head>
 <body class="bg-gray-900 text-white transition-all duration-500">
@@ -26,7 +28,7 @@
                 <li>
                     <form action="{% url 'search' %}" method="POST">
                         {% csrf_token %}
-                        <input type="text" name="searched" class="text-black-400" placeholder="Search for users or posts..." required>
+                        <input type="text" name="searched" class="text-black-400 bg-black" placeholder="Search for users or posts..." required>
                         <button type="submit">Search</button>
                     </form>
                 </li>
@@ -62,7 +64,7 @@
                         <li><a href="{% url 'dashboard' user.username %}" class="profile-item">📋 Dasboard</a></li>
                         <li><a href="{% url 'favorite_list' %}" class="profile-item">🗒️ Favourite</a></li>
                         <li><a href="{% url 'private_feed' %}" class="profile-item">📒 Private Feed</a></li>
-                        <li><a href="settings.html" class="profile-item">⚙️ Settings</a></li>
+                        <li><a href="{% url 'settings' %}" class="profile-item">⚙️ Settings</a></li>
                         <li><a href="{% url 'logout' %}" class="profile-item">🚪 Logout</a></li>
                     </ul>
                 </div>

@@ -51,19 +51,21 @@
             <a href="{{ profile.socials }}" target="_blank" class="text-blue-400 hover:underline">Chat on WhatsApp</a>
         </p>
         {% if request.user != reviewed_user %}
-            {% if reviewed_user in request.user.favorite_users.all %}
-                <!-- Remove from Favorites Button -->
-                <form method="post" action="{% url 'toggle_favorite' reviewed_user.username %}">
-                    {% csrf_token %}
-                    <button type="submit" class="favorite-button remove">Remove from Favorites</button>
-                </form>
-            {% else %}
-                <!-- Add to Favorites Button -->
-                <form method="post" action="{% url 'toggle_favorite' reviewed_user.username %}">
-                    {% csrf_token %}
-                    <button type="submit" class="favorite-button add">Add to Favorites</button>
-                </form>
-            {% endif %}
+                <div class="flex gap-5">
+                     <!-- Add to Favorites Button -->
+                     <form method="post" action="{% url 'toggle_favorite' reviewed_user.username %}">
+                        {% csrf_token %}
+                        <button type="submit" class="favorite-button add">Add to Favorites</button>
+                    </form>
+
+                    <!-- Remove from Favorites Button -->
+                    <form method="post" action="{% url 'toggle_favorite' reviewed_user.username %}">
+                        {% csrf_token %}
+                        <button type="submit" class="favorite-button remove">Remove from Favorites</button>
+                    </form>
+            
+             </div>
+           
         {% endif %}
         {% endif %}
     </div>

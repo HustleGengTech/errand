@@ -6,7 +6,7 @@
     <h1 class="text-3xl font-bold mb-6">Post Details</h1>
 
     <!-- Post Card -->
-    <div class="bg-gray-800 shadow-lg rounded-lg overflow-hidden p-6">
+    <div class="bg-gray-800 shadow-lg rounded-lg overflow-hidden p-6 max-w-sm">
         <!-- Post Header -->
         {% if post.author %}
             <div href="{% url 'user_dashboard' username=post.author.username %}" class="flex items-center space-x-4">
@@ -59,7 +59,7 @@
 
     <!-- Comments List -->
     
-    <div id="comments-list" class="space-y-4 mt-4" hx-swap="afterbegin transition:true">
+    <div id="comments-list" class="space-y-4 mt-4 max-w-sm" hx-swap="afterbegin transition:true">
         {% for comment in comments %}
         {% include 'partials/comment.html' %}
         {% empty %}
