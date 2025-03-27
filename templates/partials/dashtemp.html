@@ -20,11 +20,11 @@
     <!-- Additional Profile Info -->
     <div class="mt-4 space-y-2 text-center">
         {% if is_own_dashboard %}
-        <p class="text-gray-300"><i class="ph ph-note text-yellow-400"></i> <span class="font-semibold">Bio:</span> {{ profile.bio }}</p>
-        <p class="text-gray-300"><i class="ph ph-briefcase text-blue-400"></i> <span class="font-semibold">Occupation:</span> {{ profile.occupation}}</p>
-        <p class="text-gray-300"><i class="ph ph-map-pin text-red-400"></i> <span class="font-semibold">City:</span> {{ profile.city }}</p>
-        <p class="text-gray-300"><i class="ph ph-map text-green-400"></i> <span class="font-semibold">State:</span> {{ profile.state }}</p>
-        <p class="text-gray-300"><i class="ph ph-whatsapp-logo text-green-500"></i> <span class="font-semibold">WhatsApp:</span> 
+        <p class="text-gray-300"><i class="ph ph-note text-yellow-400">📔</i> <span class="font-semibold">Bio:</span> {{ profile.bio }}</p>
+        <p class="text-gray-300"><i class="ph ph-briefcase text-blue-400">💼</i> <span class="font-semibold">Occupation:</span> {{ profile.occupation}}</p>
+        <p class="text-gray-300"><i class="ph ph-map-pin text-red-400">📍</i> <span class="font-semibold">City:</span> {{ profile.city }}</p>
+        <p class="text-gray-300"><i class="ph ph-map text-green-400">🗺</i> <span class="font-semibold">State:</span> {{ profile.state }}</p>
+        <p class="text-gray-300"><i class="ph ph-whatsapp-logo text-green-500">💬</i> <span class="font-semibold">WhatsApp:</span> 
             <a href="{{ profile.socials }}" target="_blank" class="text-blue-400 hover:underline">Chat on WhatsApp</a>
         </p>
         {% if request.user != reviewed_user %}
@@ -43,11 +43,11 @@
             {% endif %}
         {% endif %}
         {% else %}
-        <p class="text-gray-300"><i class="ph ph-note text-yellow-400"></i> <span class="font-semibold">Bio:</span> {{ profile.bio }}</p>
-        <p class="text-gray-300"><i class="ph ph-briefcase text-blue-400"></i> <span class="font-semibold">Occupation:</span> {{ profile.occupation}}</p>
-        <p class="text-gray-300"><i class="ph ph-map-pin text-red-400"></i> <span class="font-semibold">City:</span> {{ profile.city }}</p>
-        <p class="text-gray-300"><i class="ph ph-map text-green-400"></i> <span class="font-semibold">State:</span> {{ profile.state }}</p>
-        <p class="text-gray-300"><i class="ph ph-whatsapp-logo text-green-500"></i> <span class="font-semibold">WhatsApp:</span> 
+        <p class="text-gray-300"><i class="ph ph-note text-yellow-400">📔</i> <span class="font-semibold">Bio:</span> {{ profile.bio }}</p>
+        <p class="text-gray-300"><i class="ph ph-briefcase text-blue-400">💼</i> <span class="font-semibold">Occupation:</span> {{ profile.occupation}}</p>
+        <p class="text-gray-300"><i class="ph ph-map-pin text-red-400">📍</i> <span class="font-semibold">City:</span> {{ profile.city }}</p>
+        <p class="text-gray-300"><i class="ph ph-map text-green-400">🗺</i> <span class="font-semibold">State:</span> {{ profile.state }}</p>
+        <p class="text-gray-300"><i class="ph ph-whatsapp-logo text-green-500">💬</i> <span class="font-semibold">WhatsApp:</span> 
             <a href="{{ profile.socials }}" target="_blank" class="text-blue-400 hover:underline">Chat on WhatsApp</a>
         </p>
         {% if request.user != reviewed_user %}

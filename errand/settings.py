@@ -33,7 +33,8 @@ if ENVIRONMENT == 'production':
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','errand-app.up.railway.app']
+CSRF_TOKEN_ORIGINS = [ 'https://errand-app.up.railway.app' ]
 INTERNAL_IPS = (
     '127.0.0.1',
     'localhost:8000'
