@@ -54,8 +54,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'errandApp',
     "django_htmx",
-    'admin_honeypot'
+    'admin_honeypot',
     "corsheaders",
+    
 ]
 
 
