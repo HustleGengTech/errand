@@ -30,9 +30,16 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','errand-app.up.railway.app']
+ALLOWED_HOSTS = [
+    "errand-app.up.railway.app",
+    "localhost",
+    "127.0.0.1",
+    'localhost:8000'
+]
 
-CSRF_TOKEN_ORIGINS = [ 'https://errand-app.up.railway.app' ]
+CSRF_TRUSTED_ORIGINS = [
+    "https://errand-app.up.railway.app",
+]
 
 INTERNAL_IPS = (
     '127.0.0.1',
@@ -74,6 +81,7 @@ MIDDLEWARE = [
 ]
 CORS_ALLOWED_ORIGINS = [
     "https://errand-app.up.railway.app",
+    "https://errand-app.com",
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 
