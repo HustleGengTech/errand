@@ -45,15 +45,15 @@
                         {% include 'partials/like_section.html' %}
                         
                         <a href="{% url 'single_post' post.id %}" class="flex items-center space-x-1 hover:text-green-400">
-                            💬 <span>{{ post.comments.count }} comment{% if post.comments.count != 1 %}s{% endif %}</span>
+                            💬 <span>{{ post.comments.count }}{% if post.comments.count != 1 %}{% endif %}</span>
                         </a>
                     
                         {% if user.is_authenticated and user == post.author %}
                         <a href="{% url 'delete_post' post.id %}" class="flex items-center space-x-1 hover:text-green-400">
-                            🧺 <span>Delete</span>
+                             <span>Delete</span>
                         </a>
                         <a href="{% url 'edit_post' post.id %}" class="flex items-center space-x-1 hover:text-green-400">
-                            ✏️ <span>Edit</span>
+                             <span>Edit</span>
                         </a>
                         {% endif %}
                     </div>
