@@ -34,7 +34,9 @@ else:
     DEBUG = False
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1','errand-app.up.railway.app']
+
 CSRF_TOKEN_ORIGINS = [ 'https://errand-app.up.railway.app' ]
+
 INTERNAL_IPS = (
     '127.0.0.1',
     'localhost:8000'
@@ -53,10 +55,12 @@ INSTALLED_APPS = [
     'errandApp',
     "django_htmx",
     'admin_honeypot'
+    "corsheaders",
 ]
 
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -67,8 +71,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_htmx.middleware.HtmxMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    
 
 ]
+CORS_ALLOWED_ORIGINS = [
+    "https://errand-app.up.railway.app",
+]
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 ROOT_URLCONF = 'errand.urls'
 
