@@ -32,10 +32,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+<<<<<<< HEAD
 if ENVIRONMENT == 'development':
     DEBUG = False
 else:
     DEBUG = True
+=======
+DEBUG = False
+>>>>>>> 7280e710f3b35f3d84e8b4a8d92d61ca04ee0b71
 
 ALLOWED_HOSTS = [
     "errand-app.up.railway.app",

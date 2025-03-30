@@ -91,9 +91,10 @@
                 <span class="icon">🛠️</span> Services
             </a></li>
             <li>
-                <form hx-get="{% url 'search' %}" hx-target="#search-results" hx-swap="innerHTML">
-                    <input type="text" name="query" placeholder="Search for users or posts..." required>
-                    <button type="submit">Search</button>
+                <form action="{% url 'search' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="searched" class="text-black-400 bg-black" placeholder="Search for users or posts..." required>
+                        <button type="submit" class="bg-blue-500">Search</button>
                 </form>
             </li>
             {% else %}
