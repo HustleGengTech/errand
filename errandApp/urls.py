@@ -7,6 +7,8 @@ from django.shortcuts import render
 from django.contrib.auth import views as auth_views
 from .views import change_email, CustomPasswordChangeView
 from . import views
+from django.urls import path
+from cloudinary import uploader
 urlpatterns = [
     path('home', views.Home, name='home' ),
     path('profile/', views.ProfileView, name='profile' ),
@@ -55,7 +57,9 @@ urlpatterns += [re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settin
 
 
 
+
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
+
 
 handler404 = custom_404

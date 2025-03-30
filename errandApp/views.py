@@ -17,14 +17,31 @@ from django.urls import reverse_lazy
 from django.conf import settings
 from django.core.mail import send_mail
 from django.db.models import Q
+from django.core.paginator import Paginator
+from cloudinary import uploader
 
 # Create your views here.
 @login_required
 def Home(request):
     posts = Post.objects.all().order_by('-created_at')
+    paginator = Paginator(posts, 5)  # 10 posts per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    
+
+    
+    # Ensure Cloudinary URLs are properly generated
+    for post in page_obj:
+        if hasattr(post, 'image') and post.image:
+            post.image_url = post.image.url  # Explicitly get the URL
+    
+    if request.headers.get('HX-Request'):
+        return render(request, 'partials/post_list.html', {'page_obj': page_obj})
     context = {
-        'posts': posts,
+        'page_obj': page_obj,
         'profile': request.user.profile,  # Ensure the profile is passed
+
     }
     return render(request,'home.html',context)
 
@@ -419,5 +436,17 @@ def filter_posts(request):
         'country': country,
     }
     return render(request, 'home.html', context)
+
+# @login_required
+# def get_post(request):
+#     page = request.GET.get('page',1)
+#     posts = Post.objects.all().order_by('-created_at')
+#     paginator = Paginator(posts, 5)  # 10 posts per page
+
+#     context = {
+#         'page_obj': paginator.page(page)
+#     }
+#     return render(request,'home.html#post_list', context)
+
 
 

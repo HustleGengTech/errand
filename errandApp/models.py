@@ -3,11 +3,11 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.templatetags.static import static
 import uuid
-
+from cloudinary.models import CloudinaryField
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='profile')
-    image = models.ImageField(upload_to='profile_pics', null=True, blank=True)
+    image = CloudinaryField('image')
     fullname = models.CharField(max_length=50, null=True, blank=True)
     email = models.CharField(max_length=20,unique=True,null=True)
     city = models.CharField(max_length=20, null=True, blank=True)
@@ -42,7 +42,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)  # User who created the post
     description = models.TextField()  # Post description
     likes = models.ManyToManyField(User, related_name='likedposts',through='LikedPost')
-    image = models.ImageField(upload_to='post_images', blank=True, null=True)  # Post image (optional)
+    image = CloudinaryField('image')  # Post image (optional)
     created_at = models.DateTimeField(default=timezone.now)  # Timestamp
 
     def __str__(self):

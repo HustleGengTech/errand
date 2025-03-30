@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="bg-gray-900 text-white p-6 flex items-center justify-center min-h-screen">
-    <div class="max-w-lg w-full bg-gray-800 p-6 rounded-lg shadow-lg relative">
+    <div class="max-w-3xl w-full bg-gray-800 p-6 rounded-lg shadow-lg">
         <!-- Profile Image -->
         {% include 'partials/message.html' %}
         <div class="flex flex-col items-center">
@@ -64,7 +64,7 @@
         </div>
 
         <!-- Edit Profile Button -->
-        <div class="mt-6 flex justify-center justify-between">
+        <div class="mt-6 flex justify-center justify-between gap-4">
             <a href="{% url 'edit_profile' %}" class="bg-blue-500 px-6 py-2 rounded-lg hover:bg-blue-600 text-white font-semibold">Edit Profile</a>
             <a href="{% url 'change_profile_picture' %}" class="bg-blue-500 px-6 py-2 rounded-lg hover:bg-blue-600 text-white font-semibold">Change Profile Picture</a>
 
