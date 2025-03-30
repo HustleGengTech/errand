@@ -151,6 +151,13 @@ def Edit_post(request, pk):
 @login_required
 def add_comment(request, pk):
     post = get_object_or_404(Post, id=pk)
+    comments = Comment.objects.filter(post=post).order_by('-created_at')
+    
+    # Paginate comments
+    paginator = Paginator(comments, 5)  # Show 5 comments per page
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+    
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -158,11 +165,22 @@ def add_comment(request, pk):
             comment.post = post
             comment.user = request.user
             comment.save()
-            # Render the new comment as a partial HTML template
-            return render(request, 'partials/comment.html', {'comment': comment})
-        else:
-            return HttpResponse('Failed to post comment.', status=400)
-    return HttpResponse('Invalid request method.', status=400)
+            
+            if request.headers.get('HX-Request'):
+                return render(request, 'partials/comment.html', {'comment': comment})
+            return redirect('post_detail', pk=pk)
+        return HttpResponse('Failed to post comment.', status=400)
+    
+    context = {
+        'post': post,
+        'comments_page': page_obj,
+        'form': CommentForm()
+    }
+    
+    if request.headers.get('HX-Request'):
+        return render(request, 'partials/comments_list.html', context)
+    
+    return render(request, 'singlepost.html', context)
 
 @login_required
 def delete_comment(request,comment_id):
@@ -300,24 +318,49 @@ def search(request):
         return render(request, 'search.html',)
 
 @login_required
-def review_page(request,username):
+def review_page(request, username):
     reviewed_user = get_object_or_404(User, username=username)
     reviews = Review.objects.filter(reviewed_user=reviewed_user).order_by('-created_at')
     profile = reviewed_user.profile
 
     if request.method == 'POST':
-        text = request.POST.get('text')  # Get text from form
-
-        if text:  # Ensure text is provided
-            Review.objects.create(
-                reviewer=request.user,          # Who is writing the review
-                reviewed_user=reviewed_user,    # Whose dashboard is being reviewed
-                text=text                       # The actual review content
+        text = request.POST.get('text')
+        
+        if text:
+            # Create the review
+            new_review = Review.objects.create(
+                reviewer=request.user,
+                reviewed_user=reviewed_user,
+                text=text
             )
+            
+            # HTMX response - return just the new review
+            if request.headers.get('HX-Request'):
+                context = {
+                    'review': new_review,
+                    'request': request  # Pass request for user authentication checks
+                }
+                return render(request, 'partials/reviewsent.html', context)
+            
+            # Regular form submission fallback
+            return redirect(reverse('review_page', kwargs={'username': reviewed_user.username}))
 
-        return redirect(reverse('review_page', kwargs={'username': reviewed_user.username}))
+    # HTMX GET request handling (for potential future use)
+    if request.headers.get('HX-Request'):
+        context = {
+            'reviews': reviews,
+            'profile': profile,
+            'user': reviewed_user,
+            'request': request
+        }
+        return render(request, 'partials/reviewsent.html', context)
 
-    return render(request, 'reviews.html', {'user': reviewed_user, 'reviews': reviews,'profile':profile})
+    # Regular GET request
+    return render(request, 'reviews.html', {
+        'user': reviewed_user,
+        'reviews': reviews,
+        'profile': profile
+    })
 
 
 @login_required

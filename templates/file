@@ -1,3 +1,0 @@
-"scripts": {
-    "watch:css":"npx @tailwindcss/cli -i ./errand/static/css/tailwind.css -o ./errand/static/dist/tailwind.css --watch"
-  }

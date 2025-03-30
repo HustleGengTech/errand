@@ -32,46 +32,37 @@
         <!-- Divider Line -->
         <hr class="my-6 border-gray-700">
         {% if request.user %}
-        {% if reviewed_user  != request.user %}
+        {% if reviewed_user != request.user %}
         <div class="flex items-center space-x-3 mb-4">
             <div class="mt-6 w-full">
                 <h2 class="text-lg font-semibold">Leave Reviews</h2>
-                <form method="POST" action="{% url 'review_page' user.username %}"  class="flex items-center space-x-4 mt-4">
+                <!-- Updated form with HTMX attributes -->
+                <form method="POST" 
+                    hx-post="{% url 'review_page' user.username %}"
+                    hx-target="#posts-section"
+                    hx-swap="afterbegin"
+                    class="flex items-center space-x-4 mt-4"
+                    _="on htmx:afterRequest reset() me">
                     {% csrf_token %}
-                    {% if request.profile.image and profile.image.url != '/media/default.jpg' %}
-                    <img src="{{ request.user.profile.image.url }}" alt="User" class="w-12 h-12 rounded-full">
-                    {% else %}
-                    <img src="{% static 'image/smile.jpeg' %}" alt="Default Profile Image" class="w-10 h-10 rounded-full object-cover border-4 border-white shadow-lg">
-                    {% endif %}
+                    
                     <textarea id="text" name="text" required
                         class="w-full bg-gray-700 text-white p-3 rounded-lg focus:outline-none"
                         placeholder="Write your review..."></textarea>
-                    <button class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">Send</button>
+                    <button type="submit" class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">Send</button>
                 </form>
             </div>
         </div>
-        {% endif%}
+        {% endif %}
         {% endif %}
         
 
         <!-- Posts Section -->
-        {% for review in reviews %}
-        <div id="posts-section" class="grid gap-4">
-            <div class="bg-gray-700 p-4 rounded-lg shadow-md flex space-x-4 ">
-                {% if review.reviewer.profile.image and profile.image.url != '/media/default.jpg' %}
-                <img src="{{ review.reviewer.profile.image.url }}" alt="Post Image" class="w-10 h-10 rounded-full">
-                {% else %}
-                <img src="{% static 'image/smile.jpeg' %}" alt="Default Profile Image" class="w-10 h-10 rounded-full object-cover border-4 border-white shadow-lg">
-                {% endif %}
-                <div>
-                    <h2 class="text-lg font-bold">{{ review.reviewer.username }}</h2>
-                    <p class="text-gray-400 text-sm">{{ review.text }}</p>
-                    <p class="text-gray-400 text-sm">{{ review.created_at }}</p>
-                </div>
-            </div>
-
-            
-        {% endfor %}
+        <div id="posts-section" class="grid gap-4" hx-swap="afterbegin transition:true">
+            {% for review in reviews %}
+            {% include 'partials/reviewsent.html' %}
+            {% empty %}
+            <p>No reviews yet</p>
+            {% endfor %}
 
         
 

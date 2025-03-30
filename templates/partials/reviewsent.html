@@ -1,0 +1,32 @@
+{% load static %}
+
+<div class="bg-gray-700 p-4 rounded-lg shadow-md flex space-x-4">
+    {% if review.reviewer.profile.image and review.reviewer.profile.image.url != '/media/default.jpg' %}
+    <img src="{{ review.reviewer.profile.image.url }}" alt="Post Image" class="w-10 h-10 rounded-full">
+    {% else %}
+    <img src="{% static 'image/smile.jpeg' %}" alt="Default Profile Image" class="w-10 h-10 rounded-full object-cover border-4 border-white shadow-lg">
+    {% endif %}
+    <div>
+        <h2 class="text-lg font-bold">{{ review.reviewer.username }}</h2>
+        <p class="text-gray-400 text-sm">{{ review.text }}</p>
+        <p class="text-gray-400 text-sm">{{ review.created_at }}</p>
+    </div>
+</div>
+<style>
+    /* Fade-in animation for new comments */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Apply the animation to new comments */
+    .comment-card {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+</style>
