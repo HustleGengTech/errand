@@ -19,6 +19,7 @@ django-environ==0.12.0
 django-htmx==1.22.0
 django-ipware==7.0.1
 django-tailwind==3.8.0
+django-template-partials==23.3
 gunicorn==23.0.0
 idna==3.10
 Jinja2==3.1.6
