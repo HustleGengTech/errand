@@ -227,20 +227,7 @@ def Register(request):
 
         # Create and save the user
         user = User.objects.create_user(username=username, email=email, password=password)
-        login(request, user)  # Log in the user after successful registration
-
-        # Send welcome email
-        subject = 'Welcome to Our Platform!'
-        message = f'Hello {username},\n\nThank you for registering on our platform! We are excited to have you here.\n\nBest regards,\nYour Team'
-        from_email = settings.EMAIL_HOST_USER
-        recipient_list = [email]
-
-        try:
-            send_mail(subject, message, from_email, recipient_list, fail_silently=False)
-            messages.success(request, 'Registration successful! A welcome email has been sent.')
-        except Exception as e:
-            messages.warning(request, 'Registration successful, but the welcome email could not be sent.')
-
+        login(request, user)  # Log in the user after suc
         return redirect('home')  # Redirect to homepage after registration
 
     return render(request, 'register.html')

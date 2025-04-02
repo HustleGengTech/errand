@@ -1,9 +1,9 @@
 {% load static %}
 {% for post in posts %}
-<div class="post-card bg-gray-800 shadow-lg rounded-lg overflow-hidden p-4 mb-6 max-w-sm ">
+<div class="post-card bg-gray-800 shadow-lg rounded-lg overflow-hidden p-4 mb-6 max-w-sm p-6 sm:p-8 md:p-10">
     <!-- Post Header -->
     {% if post.author %}
-    <div href="" class="flex items-center space-x-4">
+    <div  class="flex items-center space-x-4">
         {% if post.author.profile.avatar and post.author.profile.avatar.url != '/media/default.jpg' %}
         <img src="{{ post.author.profile.avatar }}" alt="Profile" class="w-12 h-12 rounded-full">
         {% else %}
@@ -32,7 +32,7 @@
 
     <!-- Post Actions -->
     <div class="mt-3 flex justify-between items-center text-gray-400">
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-7">
             {% include 'partials/like_section.html' %}
             
             <a href="{% url 'single_post' post.id %}" class="flex items-center space-x-1 hover:text-green-400">

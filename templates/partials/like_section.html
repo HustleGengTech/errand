@@ -5,12 +5,12 @@
         <a hx-get="{% url 'like-post' post.id %}" class="flex items-center space-x-1         hover:text-blue-400    cursor-pointer "
             hx-target="closest div"
             hx-swap="outerHTML">
-            ❤️ Liked
+            ❤️ 
             {% else %}
             <a hx-get="{% url 'like-post' post.id %}" class="flex items-center space-x-1 hover:text-blue-400 cursor-pointer "
             hx-target="closest div"
             hx-swap="outerHTML">
-            🤍 Like
+            🤍 
             {% endif %}
         </a>
         {% endif %}
