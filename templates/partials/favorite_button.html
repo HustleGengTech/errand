@@ -1,0 +1,38 @@
+{% if is_favorite %}
+    <form hx-post="{% url 'toggle_favorite' reviewed_user.username %}"
+          hx-target="this"
+          hx-swap="outerHTML">
+        {% csrf_token %}
+        <button type="submit" class="favorite-button remove bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+            Remove from Favorites
+        </button>
+    </form>
+{% else %}
+    <form hx-post="{% url 'toggle_favorite' reviewed_user.username %}"
+          hx-target="this"
+          hx-swap="outerHTML">
+        {% csrf_token %}
+        <button type="submit" class="favorite-button add bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+            Add to Favorites
+        </button>
+    </form>
+{% endif %}
+<script>
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        if (evt.detail.target.id === 'favorite-button-container') {
+            const isFavorite = evt.detail.elt.querySelector('.remove') !== null;
+            showToast(isFavorite ? 'Added to favorites' : 'Removed from favorites');
+        }
+    });
+    
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+</script>

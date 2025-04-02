@@ -1,0 +1,10 @@
+<fade-in class="opacity-0" _="on load transition my opacity to 1 over 0.3 seconds">
+{% include 'partials/post_list.html' %}
+<!-- This will be the new trigger for the next page -->
+<div hx-get="{% url 'home' %}?page={{ page|add:1 }}"
+    hx-trigger="revealed"
+    hx-swap="outerHTML"
+    hx-target="this"
+    hx-indicator=".loading-indicator">
+</div>
+</fade-in>

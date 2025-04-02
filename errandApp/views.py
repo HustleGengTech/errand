@@ -18,31 +18,41 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.core.validators import EmailValidator
+from django.core.exceptions import ValidationError
 from cloudinary import uploader
 
 # Create your views here.
+def LandindPage(request):
+    return render(request,'landing.html')
+
+def AboutPage(request):
+    return render(request,'about.html')
+
 @login_required
 def Home(request):
     posts = Post.objects.all().order_by('-created_at')
     paginator = Paginator(posts, 5)  # 10 posts per page
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    page = int(request.GET.get('page',1))
+    try:
+        posts= paginator.page(page)
+    except:
+        return HttpResponse('No more post')
 
-    
-
-    
     # Ensure Cloudinary URLs are properly generated
-    for post in page_obj:
+    for post in posts:
         if hasattr(post, 'image') and post.image:
             post.image_url = post.image.url  # Explicitly get the URL
     
-    if request.headers.get('HX-Request'):
-        return render(request, 'partials/post_list.html', {'page_obj': page_obj})
+    
     context = {
-        'page_obj': page_obj,
+        'page': page,
+        'posts': posts,
         'profile': request.user.profile,  # Ensure the profile is passed
 
     }
+    if request.htmx:
+        return render(request, 'snippets/loop_home_posts.html',context)
     return render(request,'home.html',context)
 
 @login_required
@@ -148,39 +158,7 @@ def Edit_post(request, pk):
     }
     return render(request, 'edit_post.html', context)
 
-@login_required
-def add_comment(request, pk):
-    post = get_object_or_404(Post, id=pk)
-    comments = Comment.objects.filter(post=post).order_by('-created_at')
-    
-    # Paginate comments
-    paginator = Paginator(comments, 5)  # Show 5 comments per page
-    page_number = request.GET.get('page', 1)
-    page_obj = paginator.get_page(page_number)
-    
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.user = request.user
-            comment.save()
-            
-            if request.headers.get('HX-Request'):
-                return render(request, 'partials/comment.html', {'comment': comment})
-            return redirect('post_detail', pk=pk)
-        return HttpResponse('Failed to post comment.', status=400)
-    
-    context = {
-        'post': post,
-        'comments_page': page_obj,
-        'form': CommentForm()
-    }
-    
-    if request.headers.get('HX-Request'):
-        return render(request, 'partials/comments_list.html', context)
-    
-    return render(request, 'singlepost.html', context)
+
 
 @login_required
 def delete_comment(request,comment_id):
@@ -214,19 +192,58 @@ def like_post(request, pk):
 
 def Register(request):
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)  # Log the user in after registration
-            messages.success(request, 'Registration successful!')
-            return redirect('home')  # Redirect to the dashboard after registration
-    else:
-        form = UserRegisterForm()
-    
-    context = {
-        'form': form,
-    }
-    return render(request, 'register.html', context)
+        username = request.POST.get('username').strip()
+        email = request.POST.get('email').strip()
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
+
+        # Check if any field is empty
+        if not username or not email or not password or not password2:
+            messages.error(request, 'All fields are required.')
+            return render(request, 'register.html')
+
+        # Validate email format using Django's EmailValidator
+        try:
+            email_validator = EmailValidator()
+            email_validator(email)  # This will raise ValidationError if the email is not valid
+        except ValidationError:
+            messages.error(request, 'Invalid email format.')
+            return render(request, 'register.html')
+
+        # Check if passwords match
+        if password != password2:
+            messages.error(request, 'Passwords do not match.')
+            return render(request, 'register.html')
+
+        # Check if username already exists
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Username is already taken.')
+            return render(request, 'register.html')
+
+        # Check if email already exists
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Email is already registered.')
+            return render(request, 'register.html')
+
+        # Create and save the user
+        user = User.objects.create_user(username=username, email=email, password=password)
+        login(request, user)  # Log in the user after successful registration
+
+        # Send welcome email
+        subject = 'Welcome to Our Platform!'
+        message = f'Hello {username},\n\nThank you for registering on our platform! We are excited to have you here.\n\nBest regards,\nYour Team'
+        from_email = settings.EMAIL_HOST_USER
+        recipient_list = [email]
+
+        try:
+            send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+            messages.success(request, 'Registration successful! A welcome email has been sent.')
+        except Exception as e:
+            messages.warning(request, 'Registration successful, but the welcome email could not be sent.')
+
+        return redirect('home')  # Redirect to homepage after registration
+
+    return render(request, 'register.html')
 
 def Login(request):
     if request.method == 'POST':
@@ -284,6 +301,14 @@ def Single_post(request, pk):
     comments = post.comments.all().order_by('-created_at')  # Fetch all comments for the post
     likes = post.likes.all()  # Fetch all likes for the post
 
+    paginator = Paginator(comments, 15)  # 10 posts per page
+    page = int(request.GET.get('page',1))
+    try:
+        comments= paginator.page(page)
+    except:
+        return HttpResponse('No more post')
+    
+
     # Handle comment submission
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -292,9 +317,14 @@ def Single_post(request, pk):
             comment.post = post
             comment.user = request.user
             comment.save()
+
+            if request.headers.get('HX-Request'):
+                return render(request, 'partials/comment.html', {'comment': comment})
             return redirect('single_post', post_id=post.id)
     else:
         form = CommentForm()
+
+    
 
     context = {
         'post': post,
@@ -318,10 +348,17 @@ def search(request):
         return render(request, 'search.html',)
 
 @login_required
-def review_page(request, username):
+def review_page(request,username):
     reviewed_user = get_object_or_404(User, username=username)
     reviews = Review.objects.filter(reviewed_user=reviewed_user).order_by('-created_at')
     profile = reviewed_user.profile
+
+    paginator = Paginator(reviews, 15)  # 5 reviews per page
+    page_number = request.GET.get('page', 1)
+    try:
+        reviews = paginator.page(page_number)
+    except:
+        reviews = paginator.page(1)
 
     if request.method == 'POST':
         text = request.POST.get('text')
@@ -351,7 +388,7 @@ def review_page(request, username):
             'reviews': reviews,
             'profile': profile,
             'user': reviewed_user,
-            'request': request
+            'request': request,
         }
         return render(request, 'partials/reviewsent.html', context)
 
@@ -359,8 +396,9 @@ def review_page(request, username):
     return render(request, 'reviews.html', {
         'user': reviewed_user,
         'reviews': reviews,
-        'profile': profile
+        'profile': profile,
     })
+
 
 
 @login_required
@@ -384,6 +422,13 @@ def toggle_favorite(request, username):
 @login_required
 def favorite_list(request):
     favorites = request.user.favorite_users.all()
+    paginator = Paginator(favorites, 5)  # 10 posts per page
+    page = int(request.GET.get('page',1))
+    try:
+        favorites= paginator.page(page)
+    except:
+        return HttpResponse('No more post')
+        
     return render(request, 'favorite_list.html', {'favorites': favorites})
 
 @login_required
@@ -480,16 +525,6 @@ def filter_posts(request):
     }
     return render(request, 'home.html', context)
 
-# @login_required
-# def get_post(request):
-#     page = request.GET.get('page',1)
-#     posts = Post.objects.all().order_by('-created_at')
-#     paginator = Paginator(posts, 5)  # 10 posts per page
-
-#     context = {
-#         'page_obj': paginator.page(page)
-#     }
-#     return render(request,'home.html#post_list', context)
 
 
 

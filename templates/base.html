@@ -32,11 +32,8 @@
                         <button type="submit" class="bg-blue-500">Search</button>
                     </form>
                 </li>
-                <li><a href="services.html" class="nav-item" data-page="services">
-                    <span class="icon">🛠️</span> Services
-                </a></li>
-                <li><a href="contact.html" class="nav-item" data-page="contact">
-                    <span class="icon">📞</span> Contact
+                <li><a href="{% url 'about' %}" class="nav-item" data-page="about">
+                    <span class="icon">ℹ️</span> About Us
                 </a></li>
                 {% else %}
                 <li><a href="{% url 'login' %}" class="nav-item" data-page="contact">
@@ -44,6 +41,9 @@
                 </a></li>
                 <li><a href="{% url 'register' %}" class="nav-item" data-page="contact">
                     <span class="icon">📝</span> Register
+                </a></li>
+                <li><a href="{% url 'about' %}" class="nav-item" data-page="about">
+                    <span class="icon">ℹ️</span> About Us
                 </a></li>
                 {% endif %}
             </ul>
@@ -84,11 +84,8 @@
             <li><a href="{% url 'create_post' %}" class="nav-item" data-page="index">
                 <span class="icon">🏠</span> Create-Post
             </a></li>
-            <li><a href="about.html" class="nav-item" data-page="about">
+            <li><a href="{% url 'about' %}" class="nav-item" data-page="about">
                 <span class="icon">ℹ️</span> About
-            </a></li>
-            <li><a href="services.html" class="nav-item" data-page="services">
-                <span class="icon">🛠️</span> Services
             </a></li>
             <li>
                 <form action="{% url 'search' %}" method="POST">

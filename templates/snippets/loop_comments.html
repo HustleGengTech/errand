@@ -1,0 +1,14 @@
+<fade-in class="opacity-0" _="on load transition my opacity to 1 over 0.3 seconds">
+{% for comment in comments %}
+{% include 'partials/comment.html' %}
+{% empty %}
+<p class="text-gray-300">No comments yet.</p>
+{% endfor %}
+
+<div hx-get="{% url 'single_post' post.id %}"
+hx-trigger="revealed"
+hx-swap="outerHTML"
+hx-target="this"
+hx-indicator=".loading-indicator">
+</div>
+</fade-in>

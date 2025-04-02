@@ -1,5 +1,5 @@
 {% load static %}
-{% for post in page_obj %}
+{% for post in posts %}
 <div class="post-card bg-gray-800 shadow-lg rounded-lg overflow-hidden p-4 mb-6 max-w-sm ">
     <!-- Post Header -->
     {% if post.author %}
@@ -50,7 +50,6 @@
         </div>
     </div>
 </div>
-{% empty %}
-<p>No more post</p>
+
 {% endfor %}
 

@@ -10,6 +10,8 @@ from . import views
 from django.urls import path
 from cloudinary import uploader
 urlpatterns = [
+    path('', views.LandindPage, name='landingpage'),
+    path('about/', views.AboutPage, name='about'),
     path('home', views.Home, name='home' ),
     path('profile/', views.ProfileView, name='profile' ),
     path('dashboard/<str:username>/', views.DashboardView, name='dashboard' ),
@@ -20,7 +22,6 @@ urlpatterns = [
     path('post/<pk>/', views.Single_post, name='single_post'),  # Single post URL
     path('post-delete/<pk>/', views.Delete_post, name='delete_post'),
     path('post-edit/<pk>/', views.Edit_post, name='edit_post'),
-    path('post/comment/<pk>', views.add_comment, name='add_comment'),
     path('delete-comment/<int:comment_id>/', views.delete_comment, name='comment-delete' ),
     path('post/<pk>/like', views.like_post, name='like-post'),
     path('search/', views.search, name='search'),
@@ -30,7 +31,7 @@ urlpatterns = [
     path('private-feed/', views.private_feed, name='private_feed'),
     path('settings/', views.settings, name='settings'),
     path('change-profile-picture/', views.change_profile_picture, name='change_profile_picture'),  # Profile picture URL
-    path('', views.Login, name='login'),
+    path('login/', views.Login, name='login'),
     path('logout/', views.user_logout, name='logout'),  # Optional: Add logout functionality
     path('change-email/', change_email, name='change_email'),
     path('change-password/', CustomPasswordChangeView.as_view(), name='change_password'),
