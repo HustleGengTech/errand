@@ -41,14 +41,20 @@
             {% if post_data.image %}
             <a href="{% url 'single_post' post_data.id %}">
                 <div class="mt-4">
-                    <img src="{{ post_data.image.url }}" alt="Post Image" class="rounded-lg shadow-lg">
+                    <img src="{{ post_data.image.url }}" alt="Post Image" class="rounded-lg shadow-lg w-full">
                 </div>
             </a>
             {% endif %}
 
             <!-- Post Title -->
-            <h3 class="mt-4 text-xl font-bold">{{ post_data.description }}</h3>
-                 <span class="text-gray-400 text-sm"> 📍 {{ post_data.author.profile.city }}, {{ post_data.author.profile.state }}</span>
+            <h3 class="mt-4 text-xl font-bold line-clamp-5">{{ post_data.description }}</h3>
+            <div class="flex space-x-2">
+                {% include 'partials/searc_like.html' %}
+            <a href="{% url 'single_post' post_data.id %}" class="flex items-center space-x-1 hover:text-green-400">
+                💬 <span>{{ post_data.comments.count }} comment{% if post_data.comments.count != 1 %}s{% endif %}</span>
+               </a>
+            </div>
+                <span class="text-gray-400 text-sm"> 📍 {{ post_data.author.profile.city }}, {{ post_data.author.profile.state }}</span>
             
         </div>
     {% endfor %}

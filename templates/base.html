@@ -35,6 +35,12 @@
                 <li><a href="{% url 'about' %}" class="nav-item" data-page="about">
                     <span class="icon">ℹ️</span> About Us
                 </a></li>
+                <li id="dropdownMenu" class="hidden absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg p-4 z-10">
+                    <input type="text" placeholder="City" class="w-full p-2 border rounded mb-2">
+                    <input type="text" placeholder="State" class="w-full p-2 border rounded mb-2">
+                    <input type="text" placeholder="Country" class="w-full p-2 border rounded mb-2">
+                    <button class="bg-blue-600 text-white w-full py-2 rounded">Search</button>
+                </li>
                 {% else %}
                 <li><a href="{% url 'login' %}" class="nav-item" data-page="contact">
                     <span class="icon">🔐</span> Login
@@ -45,21 +51,23 @@
                 <li><a href="{% url 'about' %}" class="nav-item" data-page="about">
                     <span class="icon">ℹ️</span> About Us
                 </a></li>
+                
                 {% endif %}
             </ul>
-
+            
             <!-- Profile & Dark Mode Toggle -->
             <div class="flex items-center space-x-4">
                 <!-- Dark Mode Toggle -->
-                <button id="dark-mode-toggle" class="text-xl">🌙</button>
+                
                 {% if user.is_authenticated %}
                 <!-- Profile Dropdown -->
                 <div class="relative">
+                    
                     <button id="profile-btn" class="flex items-center space-x-2 bg-gray-700 px-3 py-2 rounded-full hover:bg-gray-600">
                         <span>👤</span>
                         <span class="hidden md:inline">Profile</span>
                     </button>
-                    <ul id="profile-menu" class="hidden absolute right-0 mt-2 w-40 bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+                    <ul id="profile-menu" class="hidden absolute right-0 mt-2 w-40 bg-gray-800 shadow-lg rounded-lg overflow-hidden z-50">
                         <li><a href="{% url 'profile' %}" class="profile-item">👤 My Profile</a></li>
                         <li><a href="{% url 'dashboard' user.username %}" class="profile-item">📋 Dasboard</a></li>
                         <li><a href="{% url 'favorite_list' %}" class="profile-item">🗒️ Favourite</a></li>
@@ -79,7 +87,7 @@
         </div>
 
         <!-- Mobile Menu -->
-        <ul id="mobile-menu" class="hidden md:hidden flex flex-col mt-4 space-y-4 bg-gray-800 p-4 z-10">
+        <ul id="mobile-menu" class="hidden md:hidden flex flex-col mt-4 space-y-4 bg-gray-800 p-4 z-50">
             {% if user.is_authenticated %}
             <li><a href="{% url 'create_post' %}" class="nav-item" data-page="index">
                 <span class="icon">🏠</span> Create-Post

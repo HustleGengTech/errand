@@ -45,8 +45,11 @@ class Post(models.Model):
     image = CloudinaryField('image')  # Post image (optional)
     created_at = models.DateTimeField(default=timezone.now)  # Timestamp
 
+
     def __str__(self):
         return f'Post by {self.author.username} at {self.created_at}'
+    
+    
     
 
 class Comment(models.Model):

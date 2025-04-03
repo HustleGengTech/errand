@@ -22,33 +22,34 @@
     {% if post.image %}
     <a href="{% url 'single_post' post.id %}">
         <div class="mt-4">
-            <img src="{{ post.image.url }}" alt="Post Image" class="rounded-lg shadow-lg">
+            <img src="{{ post.image.url }}" alt="Post Image" class="rounded-lg shadow-lg w-full">
         </div>
     </a>
     {% endif %}
 
     <!-- Post Title -->
-    <h3 class="mt-4 text-xl font-bold">{{ post.description }}</h3>
+    <h3 class="mt-4 text-xl font-bold w-48 line-clamp-5">{{ post.description }}</h3>
 
     <!-- Post Actions -->
     <div class="mt-3 flex justify-between items-center text-gray-400">
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-2">
             {% include 'partials/like_section.html' %}
             
             <a href="{% url 'single_post' post.id %}" class="flex items-center space-x-1 hover:text-green-400">
-                comment <span>{{ post.comments.count }}{% if post.comments.count != 1 %}{% endif %}</span>
+                💬 <span> {{ post.comments.count }} {% if post.comments.count != 1 %}{% endif %}</span>
             </a>
         
             {% if user.is_authenticated and user == post.author %}
             <a href="{% url 'delete_post' post.id %}" class="flex items-center space-x-1 hover:text-green-400">
-                 <span>Delete</span>
+                🗑 <span>Delete</span>
             </a>
             <a href="{% url 'edit_post' post.id %}" class="flex items-center space-x-1 hover:text-green-400">
-                 <span>Edit</span>
+                🖍 <span>Edit</span>
             </a>
             {% endif %}
         </div>
     </div>
+    <p class="text-gray-400 text-bold pt-2">📍 {{ post.author.profile.city }}, {{ post.author.profile.state }}</p>
 </div>
 
 {% endfor %}
