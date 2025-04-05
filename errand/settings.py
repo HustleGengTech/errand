@@ -41,11 +41,13 @@ ALLOWED_HOSTS = [
     "errand-app.up.railway.app",
     "localhost",
     "127.0.0.1",
-    'localhost:8000'
+    'localhost:8000',
+    'https://errand2test.up.railway.app'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://errand-app.up.railway.app",
+    'https://errand2test.up.railway.app'
 ]
 
 INTERNAL_IPS = (
@@ -92,6 +94,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "https://errand-app.up.railway.app",
     "https://errand-app.com",
+    'https://errand2test.up.railway.app'
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 
