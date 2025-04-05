@@ -1,3 +1,4 @@
+{% load django_vite %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -5,14 +6,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Errand</title>
-    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
     <script src="https://unpkg.com/hyperscript.org@0.9.14"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- <link rel="stylesheet" href="{% if debug %}{% static 'dist/tailwind.css' %}{% else %}{% static 'dist/tailwind.min.css' %}{% endif %}"> -->
- 
+    {% vite_hmr_client %}
+    
+    {% vite_asset 'static/js/main.js' %}
 </head>
-<body class="bg-gra-900 text-white transition-all duration-500 z-10">
+<body class="bg-gray-900 text-white transition-all duration-500 z-10">
     <nav class="bg-gray-800 shadow-lg p-4 sticky top-0 w-full z-10">
         <div class="max-w-7xl mx-auto flex justify-between items-center z-10">
             <!-- Logo -->

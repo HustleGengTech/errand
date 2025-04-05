@@ -7,7 +7,7 @@
         {% if post.author.profile.avatar and post.author.profile.avatar.url != '/media/default.jpg' %}
         <img src="{{ post.author.profile.avatar }}" alt="Profile" class="w-12 h-12 rounded-full">
         {% else %}
-        <img src="{% static 'image/smile.jpeg' %}" alt="Profile" class="w-12 h-12 rounded-full">
+        <img src="https://res.cloudinary.com/dnqciax3g/image/upload/v1743824844/oav1fbjwydcp1xdw9c31.jpg" alt="Profile" class="w-12 h-12 rounded-full">
         {% endif %}
         <div>
             <a href="{% url 'user_dashboard' username=post.author.username %}">
@@ -28,7 +28,7 @@
     {% endif %}
 
     <!-- Post Title -->
-    <h3 class="mt-4 text-xl font-bold w-48 line-clamp-5">{{ post.description }}</h3>
+    <h3 class="mt-4 text-xl font-bold w-48 line-clamp-5 w-full">{{ post.description }}</h3>
 
     <!-- Post Actions -->
     <div class="mt-3 flex justify-between items-center text-gray-400">

@@ -13,7 +13,7 @@
                 {% if post.author.profile.avatar and post.author.profile.avatar.url != '/media/default.jpg' %}
                 <img src="{{ post.author.profile.avatar }}" alt="Profile" class="w-12 h-12 rounded-full">
                 {% else %}
-                <img src="{% static 'image/smile.jpeg' %}" alt="Profile" class="w-12 h-12 rounded-full">
+                <img src="https://res.cloudinary.com/dnqciax3g/image/upload/v1743824844/oav1fbjwydcp1xdw9c31.jpg" alt="Profile" class="w-12 h-12 rounded-full">
                 {% endif %}
                 <div>
                     <h2 class="text-lg font-semibold">{{ post.author.profile.name }}</h2>

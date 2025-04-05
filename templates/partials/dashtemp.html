@@ -4,7 +4,7 @@
         {%  if profile.image and profile.image.url != '/media/default.jpg'  %}
         <img src="{{ profile.image.url }}" alt="Profile Picture" class="w-full h-full object-cover">
         {% else %}
-        <img src="{% static 'image/smile.jpeg' %}" alt="Profile Picture" class="w-full h-full object-cover">
+        <img src="https://res.cloudinary.com/dnqciax3g/image/upload/v1743824844/oav1fbjwydcp1xdw9c31.jpg" alt="Profile Picture" class="w-full h-full object-cover">
         {% endif %}
     </div>
     {% if is_own_dashboard %}

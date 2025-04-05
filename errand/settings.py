@@ -33,9 +33,9 @@ SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if ENVIRONMENT == 'development':
-    DEBUG = False
-else:
     DEBUG = True
+else:
+    DEBUG = False
 
 ALLOWED_HOSTS = [
     "errand-app.up.railway.app",
@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'admin_honeypot',
     "corsheaders",
     "template_partials",
+    'django_vite',
     
 ]
 
@@ -130,8 +131,15 @@ DATABASES = {
     }
 }
 POSTGRES_LOCALLY = True
-if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
+if ENVIRONMENT == 'production' and POSTGRES_LOCALLY == True:
     DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
+
+
+DJANGO_VITE = {
+  "default": {
+    "dev_mode": True
+  }
+}
 
 
 # Password validation
@@ -177,12 +185,13 @@ cloudinary.config(
     API_SECRET =  os.getenv('CLOUDINARY_API_SECRET')
 )
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static'] 
+STATIC_URL = 'static/' 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+  BASE_DIR / "assets"
+]
 MEDIA_URL = '/media/'
 
-STATICFILES_DIRS = [(os.path.join(BASE_DIR, 'static'))]
 
 if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
@@ -190,8 +199,7 @@ else:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+
 
 PAGE_SIZE = 5
 
