@@ -42,7 +42,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     'localhost:8000',
-    'https://errand2test.up.railway.app'
+    'errand2test.up.railway.app'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
