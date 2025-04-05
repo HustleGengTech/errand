@@ -137,7 +137,7 @@ if ENVIRONMENT == 'production' and POSTGRES_LOCALLY == True:
 
 DJANGO_VITE = {
   "default": {
-    "dev_mode": True
+    "dev_mode": False
   }
 }
 
