@@ -137,7 +137,8 @@ if ENVIRONMENT == 'production' and POSTGRES_LOCALLY == True:
 
 DJANGO_VITE = {
   "default": {
-    "dev_mode": False
+    "dev_mode": False,
+    'manifest_path': BASE_DIR / 'static' / 'dist' / 'manifest.json',
   }
 }
 
