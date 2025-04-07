@@ -9,8 +9,12 @@
   
     <!-- Toggle Buttons -->
     <div class="flex justify-center space-x-4 mb-2">
-      <button class="px-4 py-2 bg-blue-600 rounded-lg" onclick="showSection('posts')">Posts</button>
-      <button class="px-4 py-2 bg-gray-700 rounded-lg" onclick="showSection('reviews')">Reviews</button>
+      <button class="px-4 py-2 bg-blue-600 rounded-lg" >Posts</button>
+      {% if user != request.user %}
+      <a href="{% url 'review_page' username=reviewed_user.username %}" class="px-4 py-2 bg-gray-600 rounded-lg">Write Reviews</a>
+      {% else %}
+          <a href="{% url 'review_page' user.username %}" class="px-4 py-2 bg-gray-600 rounded-lg">Check Your Reviews</a>
+      {% endif %}
     </div>
   
     <div id="posts" class="post-card bg-gray-800 shadow-lg rounded-lg overflow-hidden grid grid-cols-2 gap-2 sm:grid-cols-3  p-4">
