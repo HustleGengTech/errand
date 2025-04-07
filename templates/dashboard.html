@@ -13,13 +13,13 @@
       <button class="px-4 py-2 bg-gray-700 rounded-lg" onclick="showSection('reviews')">Reviews</button>
     </div>
   
-    <div id="posts" class="post-card bg-gray-800 shadow-lg rounded-lg overflow-hidden grid grid-cols-3 gap-2  p-4">
+    <div id="posts" class="post-card bg-gray-800 shadow-lg rounded-lg overflow-hidden grid grid-cols-2 gap-2 sm:grid-cols-3  p-4">
         {% for post in posts %}
           <div class="relative group">
             {% if post.image %}
               <img src="{{ post.image.url }}"
                    alt="Post Image"
-                   class="aspect-square w-full object-cover rounded-lg" />
+                   class="aspect-square w-full h-70 sm:h-72 object-cover rounded-lg" />
             {% endif %}
       
             <!-- Hover Overlay -->
