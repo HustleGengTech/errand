@@ -2,20 +2,21 @@ import { defineConfig } from "vite";
 import { resolve } from 'path';
 import tailwindcss from "@tailwindcss/vite"
 
-
 export default defineConfig({
-    base: "/static/",
-    build: {
-      manifest: "manifest.json",
-      outDir: resolve("./assets"),
-      assetsDir: "django-assets",
-      rollupOptions: {
-        input: {
-          test: resolve('./static/js/main.js')
-        }
-      }
+  root: resolve("./static/src"),
+  base: "/static/",
+  build: {
+    manifest: true,
+    outDir: resolve("./static/dist"),
+    assetsDir: "assets",
+    rollupOptions: {
+      input: {
+        main: resolve("./static/src/main.js"),
+      },
     },
-    plugins:[
-      tailwindcss()
-    ]
-  })
+    emptyOutDir: true,
+  },
+  plugins: [
+    tailwindcss()
+  ]
+})
