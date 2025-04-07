@@ -72,8 +72,6 @@ INSTALLED_APPS = [
     'admin_honeypot',
     "corsheaders",
     "template_partials",
-    'django_vite',
-    
 ]
 
 
@@ -89,8 +87,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_htmx.middleware.HtmxMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    
-
 ]
 CORS_ALLOWED_ORIGINS = [
     "https://errand-app.up.railway.app",
@@ -130,17 +126,11 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-POSTGRES_LOCALLY = True
+POSTGRES_LOCALLY = False
 if ENVIRONMENT == 'production' and POSTGRES_LOCALLY == True:
     DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
 
 
-DJANGO_VITE = {
-  "default": {
-    "dev_mode": False,
-    'manifest_path': BASE_DIR / 'static' / 'dist' / 'manifest.json',
-  }
-}
 
 
 # Password validation
@@ -188,9 +178,6 @@ cloudinary.config(
 
 STATIC_URL = 'static/' 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-  BASE_DIR / "assets"
-]
 MEDIA_URL = '/media/'
 
 

@@ -1,5 +1,5 @@
 {% load static %}
-<div class="flex flex-col items-center">
+<div class="flex flex-col items-center mb-6">
     <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg">
         {%  if profile.image and profile.image.url != '/media/default.jpg'  %}
         <img src="{{ profile.image.url }}" alt="Profile Picture" class="w-full h-full object-cover">
